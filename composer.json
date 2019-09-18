@@ -1,0 +1,19 @@
+{
+    "name": "jasco-b/view-model",
+    "description": "View model for yii2",
+    "type": "package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "jasurbek",
+            "email": "bjasurbek94@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "jascoB\\ViewModel\\": "src"
+        }
+    }
+}
