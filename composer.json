@@ -1,21 +1,29 @@
 {
-    "name": "jasco-b/view-model",
-    "description": "View model for yii2",
-    "type": "package",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "jasurbek",
-            "email": "bjasurbek94@gmail.com"
-        }
-    ],
-    "minimum-stability": "stable",
-    "require": {
-        "nesbot/carbon": "^2.24"
-    },
-    "autoload": {
-        "psr-4": {
-            "jascoB\\ViewModel\\": "src"
-        }
+  "name": "jasco-b/view-model",
+  "description": "View model for yii2",
+  "type": "package",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "jasurbek",
+      "email": "bjasurbek94@gmail.com"
     }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "nesbot/carbon": "^2.24"
+  },
+  "autoload": {
+    "psr-4": {
+      "jascoB\\ViewModel\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "jascoB\\ViewModel\\Test\\": "Test"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7"
+  }
 }
