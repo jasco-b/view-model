@@ -10,9 +10,6 @@
     }
   ],
   "minimum-stability": "stable",
-  "require": {
-    "nesbot/carbon": "^2.24"
-  },
   "autoload": {
     "psr-4": {
       "jascoB\\ViewModel\\": "src"
