@@ -17,9 +17,24 @@ use ReflectionProperty;
 
 abstract class ViewModel implements Arrayable
 {
+    /**
+     * @var array $ignore this is ignored functions list
+     */
     protected $ignore = [];
+
+    /**
+     * @var string
+     */
     protected $view = '';
+
+    /**
+     * @var $_class ReflectionClass
+     */
     private $_class;
+
+    /**
+     * @var array $_items items for return
+     */
     private $_items = [];
 
     public function toArray()
@@ -36,39 +51,6 @@ abstract class ViewModel implements Arrayable
         }
 
         return $this->_items;
-    }
-
-
-    protected function isIgnored( $methodName)
-    {
-        if (strpos($methodName, '__') === 0) {
-            return true;
-        }
-
-        return in_array($methodName, $this->ignoredMethods());
-    }
-
-    protected function ignoredMethods(): array
-    {
-        return array_merge([
-            'toArray',
-            'filterProperties',
-            'getClass',
-            'filterMethods',
-            'items',
-            'offsetExists',
-            'offsetGet',
-            'offsetSet',
-            'offsetUnset',
-        ], $this->ignore);
-    }
-
-    protected function createVariableFromMethod(ReflectionMethod $method)
-    {
-        if ($method->getNumberOfParameters() === 0) {
-            return $this->{$method->getName()}();
-        }
-        return Closure::fromCallable([$this, $method->getName()]);
     }
 
     /**
@@ -89,6 +71,44 @@ abstract class ViewModel implements Arrayable
         }
         return $filteredPropertiesWithKeys;
     }
+
+    /**
+     * @return ReflectionClass
+     * @throws \ReflectionException
+     */
+    protected function getClass()
+    {
+        if (!$this->_class) {
+            $this->_class = new ReflectionClass($this);
+        }
+
+        return $this->_class;
+    }
+
+    /**
+     * @param $items
+     * @return ReflectionProperty []
+     */
+    protected function filterProperties($items)
+    {
+        return array_filter($items, function (ReflectionProperty $property) {
+            return !$this->isIgnored($property->getName());
+        });
+    }
+
+    /**
+     * @param $methodName string method name or property name
+     * @return bool
+     */
+    protected function isIgnored($methodName)
+    {
+        if (strpos($methodName, '__') === 0) {
+            return true;
+        }
+
+        return in_array($methodName, $this->ignoredMethods());
+    }
+
 
     /**
      * @return array
@@ -112,17 +132,6 @@ abstract class ViewModel implements Arrayable
 
     /**
      * @param $items
-     * @return ReflectionProperty []
-     */
-    protected function filterProperties($items)
-    {
-        return array_filter($items, function (ReflectionProperty $property) {
-            return !$this->isIgnored($property->getName());
-        });
-    }
-
-    /**
-     * @param $items
      * @return ReflectionMethod []
      */
     protected function filterMethods($items)
@@ -133,16 +142,30 @@ abstract class ViewModel implements Arrayable
     }
 
     /**
-     * @return ReflectionClass
-     * @throws \ReflectionException
+     * ignored methods list
+     * @return array
      */
-    protected function getClass()
+    protected function ignoredMethods(): array
     {
-        if (!$this->_class) {
-            $this->_class = new ReflectionClass($this);
-        }
+        return array_merge([
+            'toArray',
+            'filterProperties',
+            'getClass',
+            'filterMethods',
+            'items',
+            'offsetExists',
+            'offsetGet',
+            'offsetSet',
+            'offsetUnset',
+        ], $this->ignore);
+    }
 
-        return $this->_class;
+    protected function createVariableFromMethod(ReflectionMethod $method)
+    {
+        if ($method->getNumberOfParameters() === 0) {
+            return $this->{$method->getName()}();
+        }
+        return Closure::fromCallable([$this, $method->getName()]);
     }
 
 }
