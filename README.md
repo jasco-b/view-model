@@ -9,7 +9,7 @@ composer require jasco-b/view-model
 ```
 
 # Usage
-Offen in Yii2 or any other frameworks in CRUD`s, it is required from developer use the same data in create and update actions.
+Often in Yii2 or any other frameworks in CRUD`s, it is required from developer use the same data in create and update actions.
 For instance:
 ### Old Controller
 ```php 
@@ -93,7 +93,7 @@ class PostController extends Controller
 }
 ```
 
-In order use view model vith Yii2 we should change config.php
+In order use view model with Yii2 we should change config.php
 ```php 
 return [
     'components' => [
